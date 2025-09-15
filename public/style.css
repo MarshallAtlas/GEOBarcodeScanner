@@ -68,3 +68,16 @@ video {
 #clear-btn:hover {
   background: #666;
 }
+
+.remove-btn {
+  margin-top: 8px;
+  padding: 5px 10px;
+  background: #aa3333;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+.remove-btn:hover {
+  background: #cc4444;
+}
