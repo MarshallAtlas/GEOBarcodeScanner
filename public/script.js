@@ -14,7 +14,7 @@ function formatTime(date) {
 function parseScan(text) {
   if (text.startsWith("#test")) {
     const payload = text.replace("#test", "");
-    // Remove leading comma
+    // Remove leading comma (format subject to change)
     const cleaned = payload.startsWith(",") ? payload.slice(1) : payload;
     const parts = cleaned.split(",");
     if (parts.length === 3) {
@@ -30,7 +30,7 @@ function parseScan(text) {
 }
 
 
-// Render results list
+// Render results list (subject to change)
 function renderResults() {
   resultsElement.innerHTML = "";
   scanHistory.slice(0, 5).forEach((item, index) => {
@@ -49,7 +49,7 @@ function renderResults() {
     resultsElement.appendChild(div);
   });
 
-  // Attach remove button listeners
+  // Attach remove button listeners 
   document.querySelectorAll(".remove-btn").forEach(btn => {
     btn.addEventListener("click", (e) => {
       const idx = e.target.getAttribute("data-index");
@@ -67,16 +67,16 @@ clearBtn.addEventListener("click", () => {
 
 // Start scanning
 codeReader
-  .listVideoInputDevices()
+  .listVideoInputDevices() //checks for cameras 
   .then(videoInputDevices => {
-    if (videoInputDevices.length === 0) {
+    if (videoInputDevices.length === 0) { 
       resultsElement.innerHTML = "<div class='result-item'>No camera found!</div>";
       return;
     }
 
-    let selectedDeviceId = videoInputDevices[0].deviceId;
+    let selectedDeviceId = videoInputDevices[0].deviceId; //first available camera is seleted
     if (videoInputDevices.length > 1) {
-      const backCam = videoInputDevices.find(d => d.label.toLowerCase().includes('back'));
+      const backCam = videoInputDevices.find(d => d.label.toLowerCase().includes('back')); //if on mobile, select back camera 
       if (backCam) selectedDeviceId = backCam.deviceId;
     }
 
@@ -87,18 +87,18 @@ codeReader
         console.log("Detected:", rawText, "at", timestamp);
 
         if (!scanHistory[0] || scanHistory[0].raw !== rawText) {
-          const parsed = parseScan(rawText);
-          scanHistory.unshift({
+          const parsed = parseScan(rawText); //calls parseScan function
+          scanHistory.unshift({ // scan history change
             raw: rawText,
             id: parsed.id,
             name: parsed.name,
             type: parsed.type,
             time: timestamp
           });
-          if (scanHistory.length > 5) {
+          if (scanHistory.length > 5) { // takes only the first 5 can be changed
             scanHistory = scanHistory.slice(0, 5);
           }
-          renderResults();
+          renderResults(); //update ui
         }
       }
       if (err && !(err instanceof ZXing.NotFoundException)) {
