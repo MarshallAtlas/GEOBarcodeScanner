@@ -5,6 +5,16 @@ const clearBtn = document.getElementById('clear-btn');
 
 let scanHistory = [];
 
+// const config = (
+//   user: 'GEODATA/mlorendo',
+//   password:,
+//   server:,
+//   database:,
+//   options:{}
+
+// );
+
+
 // Format timestamp
 function formatTime(date) {
   return date.toLocaleString();
@@ -59,7 +69,8 @@ function renderResults() {
   });
 }
 
-// Clear history
+// Clear history CHANGE TO UPLOAD/UPDATE DB 
+// store the parsed information then upload to db
 clearBtn.addEventListener("click", () => {
   scanHistory = [];
   renderResults();
