@@ -5,7 +5,7 @@ require("dotenv").config();
 const config = {
   user: process.env.DB_USER || "GEODATA/mflorendo",
   password: process.env.DB_PASSWORD || "",
-  server: process.env.DB_SERVER || "SJARANILLIA",
+  server: process.env.DB_SERVER || "SJARANILLA",
   database: process.env.DB_NAME || "barcodeTest",
   options: {
     encrypt: false,
