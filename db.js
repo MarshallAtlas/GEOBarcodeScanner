@@ -1,24 +1,14 @@
 // db.js
-const sql = require("mssql");
+const sql = require("mssql/msnodesqlv8");
 require("dotenv").config();
 
+const server = process.env.DB_SERVER || "SJARANILLA";
+const database = process.env.DB_NAME || "barcodeTest";
+
 const config = {
-  user: process.env.DB_USER || "GEODATA/mflorendo",
-  password: process.env.DB_PASSWORD || "",
-  server: process.env.DB_SERVER || "SJARANILLA",
-  database: process.env.DB_NAME || "barcodeTest",
-  options: {
-    encrypt: false,
-    trustServerCertificate: true
-  },
-  pool: {
-    max: 10,
-    min: 0,
-    idleTimeoutMillis: 30000
-  }
+  connectionString: `Driver={ODBC Driver 17 for SQL Server};Server=${server};Database=${database};Trusted_Connection=yes;`
 };
 
-// Create connection pool (lazy - doesn't connect until first request)
 const pool = new sql.ConnectionPool(config);
 
 async function getPool() {
