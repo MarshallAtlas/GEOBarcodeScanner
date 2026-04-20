@@ -1,22 +1,34 @@
 // db.js
 const sql = require("mssql");
+require("dotenv").config();
 
 const config = {
-  user: "GEODATA/mflorendo",
-  password: "",
-  server: "SJARANILLIA",   // or your SQL Server host
-  database: "barcodeTest",
+  user: process.env.DB_USER || "GEODATA/mflorendo",
+  password: process.env.DB_PASSWORD || "",
+  server: process.env.DB_SERVER || "SJARANILLIA",
+  database: process.env.DB_NAME || "barcodeTest",
   options: {
-    encrypt: false,      // set true for Azure
-    trustServerCertificate: true // required for self-signed certs
+    encrypt: false,
+    trustServerCertificate: true
+  },
+  pool: {
+    max: 10,
+    min: 0,
+    idleTimeoutMillis: 30000
   }
 };
 
+// Create connection pool (lazy - doesn't connect until first request)
+const pool = new sql.ConnectionPool(config);
+
 async function getPool() {
   try {
-    return await sql.connect(config);
+    if (!pool.connected) {
+      await pool.connect();
+    }
+    return pool;
   } catch (err) {
-    console.error("Database connection failed:", err);
+    console.error("Database connection error:", err.message);
     throw err;
   }
 }
